@@ -13,13 +13,13 @@ routes_bp = Blueprint('routes', __name__)
 app.register_blueprint(routes_bp)
 
 # --- Patient Routes ---
-@routes_bp.route('/patients', methods=['POST'])
+@routes_bp.route('/create_patient', methods=['POST'])
 def add_patient():
     data = request.json
     Patient.create_patient(data)
     return jsonify({"message": "Patient added successfully"}), 201
 
-@routes_bp.route('/patients', methods=['GET'])
+@routes_bp.route('/get_patients', methods=['GET'])
 def get_all_patients():
     patients = Patient.get_all_patients()
     return jsonify(patients), 200
@@ -41,7 +41,7 @@ def update_patient(patient_id):
     else:
         return jsonify({"error": "Patient not found"}), 404
 
-@routes_bp.route('/patients/<patient_id>', methods=['DELETE'])
+@routes_bp.route('/delete_patient/<patient_id>', methods=['DELETE'])
 def delete_patient(patient_id):
     result = Patient.delete_patient(patient_id)
     if result.deleted_count > 0:
@@ -50,7 +50,7 @@ def delete_patient(patient_id):
         return jsonify({"error": "Patient not found"}), 404
 
 # --- Doctor Routes ---
-@routes_bp.route('/doctors', methods=['POST'])
+@routes_bp.route('/create_doctor', methods=['POST'])
 def add_doctor():
     data = request.json
     Doctor.create_doctor(data)
