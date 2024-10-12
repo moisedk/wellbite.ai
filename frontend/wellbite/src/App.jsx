@@ -16,7 +16,7 @@ function App() {
           <h1 className="text-gray-200 text-2xl underline">Get Started</h1>
           <div className="w-[26%] h-full flex justify-between place-items-center">
             <button className="bg-[#4F5DF9] bg-opacity-[40%] border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Doctor</button>
-            <button className="bg-[#4FF95A] bg-opacity-[40%] border-[#4FF95A] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Doctor</button>
+            <button className="bg-[#4FF95A] bg-opacity-[40%] border-[#4FF95A] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Patient</button>
           </div>
         </div>
       </div>
