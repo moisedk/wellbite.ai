@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Home =()=>{
     return (
@@ -6,7 +7,7 @@ const Home =()=>{
     <div className="bg-[#212121] bg-opacity-[60%] h-full w-full">
       <div className="w-full h-[10%] bg-inhet sticky flex justify-between px-12 place-items-center">
         <h1 className="font-futura text-white text-4xl">WellBite</h1>
-        <a href="doclogin" className="border-2 bg-transparent rounded-lg px-4 py-2 text-white">Login</a>
+      <Link to={'/dashboard'}><button className="hover:-translate-y-1 hover:bg-gray-200 hover:text-black transition border-2 hover:scale-110 bg-transparent rounded-lg px-4 py-2 text-white ease-in-out">Login</button></Link>
       </div>
 
       <div className="w-full h-[80%] place-items-center justify-center">
@@ -16,8 +17,8 @@ const Home =()=>{
         <div className="w-full h-[30%] justify-center flex flex-col place-items-center">
           <h1 className="text-gray-200 text-2xl underline">Get Started</h1>
           <div className="w-[26%] h-full flex justify-between place-items-center">
-            <a href="/docsignup" className="bg-[#4F5DF9] bg-opacity-[40%] border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4" id="doctorsignup">I am a Doctor</a>
-            <button className="bg-[#4FF95A] bg-opacity-[40%] border-[#4FF95A] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Patient</button>
+            <button className="bg-[#4F5DF9] transition ease-in-out bg-opacity-[40%] hover:scale-110 border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4 hover:-translate-y-1 hover:bg-opacity-100 hover:text-white">I am a Doctor</button>
+            <button className="bg-[#69e371] transition ease-in-out hover:-translate-y hover:bg-opacity-100 hover:text-white bg-opacity-[40%] border-[#4FF95A] rounded-xl hover:scale-110 border-2 text-white text-xl px-6 py-4">I am a Patient</button>
           </div>
         </div>
       </div>
