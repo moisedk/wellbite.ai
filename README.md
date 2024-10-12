@@ -1,4 +1,6 @@
-# WellBite.ai
+### WellBite.ai
+
+![WellBite-Logo](https://github.com/user-attachments/assets/dcca4ace-37c3-4148-b265-a8c7ba766121)
 
 **WellBite.ai** is a cutting-edge web-based platform designed to provide personalized dietary recommendations based on medical advice and restrictions. Leveraging advanced AI technology and a secure, scalable infrastructure, WellBite.ai helps patients maintain their health by analyzing their food intake and aligning it with their doctor's prescribed dietary restrictions. It offers seamless interaction between patients, doctors, and AI models through an intuitive, user-friendly interface.
 
