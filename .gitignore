@@ -1,2 +1,81 @@
-*/venv
+*/env
+./env
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask cache files
+instance/
+*.pyo
+*.pyc
+
+# Environment variables and config files
 .env
+*.env
+
+# Python virtual environment directories
+venv/
+ENV/
+env/
+
+# Log files
+*.log
+
+# SQLite database files (if used for development)
+*.sqlite3
+*.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store
+
+# PyCharm specific files
+.idea/
+
+# VSCode specific files
+.vscode/
+
+# Compiled C extensions
+*.so
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+
+# Test artifacts
+.tox/
+.nox/
+*.test
+*.spec
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# MySQL/SQLite/other database credentials and configuration files
+db.sqlite3
+db.json
+
+# Temporary files created during editing
+*~
