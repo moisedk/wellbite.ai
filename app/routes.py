@@ -7,7 +7,6 @@ from models import Patient, Doctor, Food
 @app.route('/')
 def home():
     return render_template('index.html')
-    return render_template('index.html')
 
 # Define a Flask blueprint for the API routes
 routes_bp = Blueprint('routes', __name__)
