@@ -5,13 +5,13 @@ const UserMain = () => {
       if (image) {
         const formData = new FormData();
         formData.append('image', image);
-        console.log(formData);
+        for (let pair of formData.entries()) {
+            console.log(`${pair[0]}, ${pair[1]}`);}
         const sendImg = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'},
-            body: JSON.stringify({img: formData})
+            body: formData
         };
-        fetch('http://127.0.0.1:5000/checkfood', sendImg).then(response=> response.json()).then(data=>console.log(data)) // Create a local URL for the image
+        fetch('/checkfood', sendImg).then(response=> response.json()).then(data=>console.log(data)) // Create a local URL for the image
       }
     };
 
@@ -23,6 +23,7 @@ const UserMain = () => {
             id="file" 
             onClick={handleFileChange}
             accept="image/*"
+            encType="multipart/form-data"
              />
             </div>
         </section>
