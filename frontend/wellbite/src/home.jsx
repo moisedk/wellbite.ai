@@ -16,7 +16,7 @@ const Home =()=>{
         <div className="w-full h-[30%] justify-center flex flex-col place-items-center">
           <h1 className="text-gray-200 text-2xl underline">Get Started</h1>
           <div className="w-[26%] h-full flex justify-between place-items-center">
-            <button className="bg-[#4F5DF9] bg-opacity-[40%] border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Doctor</button>
+            <a href="/docsignup" className="bg-[#4F5DF9] bg-opacity-[40%] border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4" id="doctorsignup">I am a Doctor</a>
             <button className="bg-[#4FF95A] bg-opacity-[40%] border-[#4FF95A] rounded-xl border-2 text-white text-xl px-6 py-4">I am a Patient</button>
           </div>
         </div>

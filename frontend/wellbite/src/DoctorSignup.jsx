@@ -1,24 +1,49 @@
 import React, { useState } from 'react';
 
 const DoctorSignup = () => {
+  // State to manage form data
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     specialization: '',
   });
 
+  // Handle input changes for all form fields
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,  // Ensure all form fields are correctly updated
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission (send data to backend)
-    console.log(formData);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();  // Prevent form from reloading the page
+
+    console.log(formData);  // Print form data to the console (for now)
+
+    // Here, you can send the data to your backend API
+    try {
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Doctor registered successfully!');
+      } else {
+        alert(data.message || 'Signup failed');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert('Error during signup');
+    }
   };
 
   return (
@@ -26,16 +51,32 @@ const DoctorSignup = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Doctor Signup</h2>
         <form onSubmit={handleSubmit}>
-          {/* Name Field */}
+          {/* First Name Field */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
+            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
+              First Name
             </label>
             <input
               type="text"
-              name="name"
-              id="name"
-              value={formData.name}
+              name="first_name"
+              id="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Last Name Field */}
+          <div className="mb-4">
+            <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+              Last Name
+            </label>
+            <input
+              type="text"
+              name="last_name"
+              id="last_name"
+              value={formData.last_name}
               onChange={handleChange}
               required
               className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
