@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./home";
 import UserMain from "./userMain";
-import DoctorSignup from "./DoctorSignup";
+import DoctorSignup from "./doctorSignup";
 import Login from "./login";
-import DoctorDashboard from "./DoctorDashboard";
+import DoctorDashboard from "./doctorDashboard";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <Route path="/dashboard" element={<UserMain/>}/>
     <Route path="/docsignup" element={<DoctorSignup/>}/>
     <Route path="/doclogin" element={<Login/>}/>
-    <Route path="doctor/dashboard" element={<DoctorDashboard/>}/>
+    <Route path="/doctor/dashboard" element={<DoctorDashboard/>}/>
    </Routes>
    </BrowserRouter>
   );

@@ -28,7 +28,7 @@ def signup():
     print(data)
 
     # Check if all required fields are provided
-    if not all([data.get('first_name'), data.get('last_name'), data.get('email'), data.get('password'), data.get('specialization')]):
+    if not all([data.get('first_name'), data.get('last_name'), data.get('username'), data.get('email'), data.get('password'), data.get('specialization')]):
         return jsonify({"message": "Missing fields"}), 400
 
     # Check if email already exists
@@ -42,18 +42,17 @@ def signup():
     doctor = {
         "first_name": data['first_name'],
         "last_name": data['last_name'],
+        "username": data['username'],
         "email": data['email'],
         "password": data['password'],
         "specialization": data['specialization']
     }
     
-    print(doctor)
-    
     print("I see you")
     # Insert the new doctor into MongoDB
     # result = db.doctors.insert_one(doctor)
 
-    return jsonify({"message": "Doctor registered successfully", "doctor_id": "Look"}), 201
+    return jsonify({"message": f"Welcome, Dr. {doctor["last_name"]}!"}), 200
 
 
 
