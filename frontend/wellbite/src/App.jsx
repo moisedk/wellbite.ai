@@ -4,6 +4,7 @@ import Home from "./home";
 import UserMain from "./userMain";
 import DoctorSignup from "./DoctorSignup";
 import Login from "./Login";
+import DoctorDashboard from "./DoctorDashboard";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <Route path="/dashboard" element={<UserMain/>}/>
     <Route path="/docsignup" element={<DoctorSignup/>}/>
     <Route path="/doclogin" element={<Login/>}/>
+    <Route path="doctor/dashboard" element={<DoctorDashboard/>}/>
    </Routes>
    </BrowserRouter>
   );
