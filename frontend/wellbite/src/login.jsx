@@ -1,26 +1,97 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
 
-const Login =()=>{
-    return (
-        <section className="w-screen h-screen bg-temp_food_bg bg-center bg-cover bg-clip-border">
-    <div className="bg-[#212121] bg-opacity-[60%] h-full w-full">
-      <div className="w-full h-[10%] bg-inhet sticky flex justify-between px-12 place-items-center">
-        <h1 className="font-futura text-white text-4xl">WellBite</h1>
-      <Link to={'/dashboard'}><button className="hover:-translate-y-1 hover:bg-gray-200 hover:text-black transition border-2 hover:scale-110 bg-transparent rounded-lg px-4 py-2 text-white ease-in-out">Register</button></Link>
-      </div>
-      <div className="w-full h-[80%] place-items-center justify-center">
-        <div className="w-full h-[30%] justify-center flex flex-col place-items-center">
-          <h1 className="text-gray-200 text-2xl underline">Get Started</h1>
-          <div className="w-[26%] h-full flex justify-between place-items-center">
-            <button className="bg-[#4F5DF9] transition ease-in-out bg-opacity-[40%] hover:scale-110 border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4 hover:-translate-y-1 hover:bg-opacity-100 hover:text-white">I am a Doctor</button>
-            <button className="bg-[#69e371] transition ease-in-out hover:-translate-y hover:bg-opacity-100 hover:text-white bg-opacity-[40%] border-[#4FF95A] rounded-xl hover:scale-110 border-2 text-white text-xl px-6 py-4">I am a Patient</button>
+const Login = () => {
+  // State to manage form data
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  // Handle input changes for both fields
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value, // Dynamically update form data based on input name
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    console.log(formData); // Log the form data (for now)
+
+    // Example: Make a request to your backend to authenticate the user
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Login successful!');
+        // Redirect to the dashboard or another page upon successful login
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Error during login');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+        <form onSubmit={handleSubmit}>
+          {/* Username Field */}
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
           </div>
-        </div>
+
+          {/* Password Field */}
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Log In
+          </button>
+        </form>
       </div>
     </div>
-   </section>
-    );
+  );
 };
 
 export default Login;

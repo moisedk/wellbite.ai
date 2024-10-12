@@ -1,6 +1,8 @@
 # Import the global `db` object (from app.py)
 from app import db
 
+from bson.objectid import ObjectId
+
 class Patient:
     """Model for interacting with the 'patients' collection in MongoDB."""
 
@@ -52,17 +54,27 @@ class Patient:
 
 
 class Doctor:
-    """Model for interacting with the 'doctors' collection in MongoDB."""
-
     @staticmethod
     def create_doctor(data):
-        """Inserts a new doctor record."""
         return db.doctors.insert_one(data)
 
     @staticmethod
     def get_doctor_by_id(doctor_id):
         """Fetches a doctor by their ID."""
         return db.doctors.find_one({"_id": doctor_id})
+    
+    def get_patients(doctor_id):
+        patients = list(db.patients.find({"doctor_id": ObjectId(doctor_id)}))
+        
+        if not patients:
+            return {"message": "No patients found for this doctor"}
+
+        # Return the list of patients (convert ObjectId to string for JSON response)
+        for patient in patients:
+            patient["_id"] = str(patient["_id"])  # Convert ObjectId to string for JSON serialization
+            patient["doctor_id"] = str(patient["doctor_id"])  # Convert ObjectId to string for JSON
+
+        return patients  # Return the list of patients as a Python dictionary (JSON)
 
 
 class Food:

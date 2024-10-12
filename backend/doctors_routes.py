@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from models.patient import Patient
-from models.doctor import Doctor
-from models.food import Food
+from models import Patient
+from models import Doctor
+from models import Food
 
 doctor_bp = Blueprint('doctor_bp', __name__)
 
@@ -13,9 +13,22 @@ def add_patient():
     return jsonify({"message": "Patient added successfully"}), 201
 
 @doctor_bp.route('/patients', methods=['GET'])
-def get_all_patients():
-    patients = Patient.get_all_patients()
+def get_doctor_patients():
+    doctor_id = request.args.get('doctor_id')
+
+    if not doctor_id:
+        return jsonify({"error": "Doctor ID is required"}), 400
+
+    # Get the patients using the Doctor model
+    patients = Doctor.get_patients(doctor_id)
+
+    # Return the result
+    if 'error' in patients:
+        return jsonify(patients), 400
+
     return jsonify(patients), 200
+
+
 
 @doctor_bp.route('/patients/<patient_id>', methods=['GET'])
 def get_patient(patient_id):
