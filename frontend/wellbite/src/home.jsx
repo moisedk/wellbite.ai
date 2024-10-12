@@ -6,7 +6,7 @@ const Home =()=>{
     <div className="bg-[#212121] bg-opacity-[60%] h-full w-full">
       <div className="w-full h-[10%] bg-inhet sticky flex justify-between px-12 place-items-center">
         <h1 className="font-futura text-white text-4xl">WellBite</h1>
-        <button className="border-2 bg-transparent rounded-lg px-4 py-2 text-white">Login</button>
+        <a href="doclogin" className="border-2 bg-transparent rounded-lg px-4 py-2 text-white">Login</a>
       </div>
 
       <div className="w-full h-[80%] place-items-center justify-center">
