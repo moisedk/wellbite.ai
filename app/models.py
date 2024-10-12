@@ -28,6 +28,27 @@ class Patient:
     def delete_patient(patient_id):
         """Deletes a patient record by their ID."""
         return db.patients.delete_one({"_id": patient_id})
+    
+    
+    @staticmethod
+    def get_assigned_doctor(patient_id):
+        """Fetches the assigned doctor for a given patient based on the doctor_id."""
+        # Step 1: Retrieve the patient record
+        patient = db.patients.find_one({"_id": patient_id})
+
+        if not patient:
+            return None  # Return None or an error if patient not found
+
+        # Step 2: Extract doctor_id from the patient record
+        doctor_id = patient.get('doctor_id')
+
+        if not doctor_id:
+            return None  # Return None or an error if no doctor assigned
+
+        # Step 3: Retrieve the doctor record using the doctor_id
+        doctor = db.doctors.find_one({"_id": doctor_id})
+
+        return doctor
 
 
 class Doctor:
