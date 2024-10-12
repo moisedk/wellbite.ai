@@ -1,8 +1,8 @@
 from app import app
-from flask import render_template
 from flask import render_template, Blueprint, request, jsonify
-
-from models import Patient, Doctor, Food
+from models import Patient
+from models import Doctor
+from models import Food
 
 @app.route('/')
 def home():
