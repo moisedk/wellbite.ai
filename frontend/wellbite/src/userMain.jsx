@@ -1,21 +1,17 @@
 import React from "react";
-import { useState } from "react";
 const UserMain = () => {
-    const [preview, setPreview] = useState(null);
-
-    const handleFileChange =async (event) => {
-      const file = event.target.files[0];
-      if (file) {
+    const handleFileChange = async (event) => {
+      const image = event.target.files[0];
+      if (image) {
         const formData = new FormData();
-        formData.append('image', file);
-        const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);
+        formData.append('image', image);
+        console.log(formData);
         const sendImg = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'},
             body: JSON.stringify({img: formData})
         };
-        fetch('/checkimage', sendImg).then(response=> response.json()).then(data=>console.log(data)) // Create a local URL for the image
+        fetch('http://127.0.0.1:5000/checkfood', sendImg).then(response=> response.json()).then(data=>console.log(data)) // Create a local URL for the image
       }
     };
 
@@ -28,9 +24,6 @@ const UserMain = () => {
             onClick={handleFileChange}
             accept="image/*"
              />
-
-
-               {preview && <img src={preview} alt="preview" style={{ width: '300px', marginTop: '20px' }} />}
             </div>
         </section>
     );
