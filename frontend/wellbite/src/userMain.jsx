@@ -1,11 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { storage } from './firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 const UserMain = () => {
     const [image, setImage] = useState(null);
     const handleFileChange = async (event) => {
       const input_image = event.target.files[0];
       if (input_image){
+        const storageRef = ref(storage, `images/${input_image.name}`);
+        try {
+        // Upload image to Firebase Storage
+        await uploadBytes(storageRef, image);
+        // Get download URL
+        const url = await getDownloadURL(storageRef);
+        console.log('Image uploaded successfully:', url);
+
+        // Send the image URL to Cloudflare Worker for analysis
+        const response = await fetch('http://localhost:8787', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imageUrl: url }),
+        });
+        const data = await response.json();
+        console.log('Food analysis response:', data);
+            }
+            catch (error) {
+            console.error('Error uploading image:', error);
+        }
+
         setImage(input_image);
       }
       
