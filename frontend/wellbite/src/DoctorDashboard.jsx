@@ -23,14 +23,16 @@ const DoctorDashboard = () => {
     try {
       const response = await fetch('/api/patients', {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'User-Email': userEmail  // Send the user email in the request headers
         },
       });
   
       const data = await response.json();
+      console.log("The data is ", data)
       setPatients(data);  // Assuming setPatients updates the patient state
+      console.log(setPatients(data.patients))
     } catch (error) {
       console.error('Error fetching patients:', error);
     }
@@ -46,9 +48,10 @@ const DoctorDashboard = () => {
 
     try {
       if (isEditing) {
-        console.log("Route 2 is hit")
-        const response = await fetch(`/api/patients`, {
-          method: 'POST',
+        // Use PUT for editing an existing patient
+        const response = await fetch(`/api/patients/${currentPatientId}`, {
+          method: 'PUT',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -57,12 +60,11 @@ const DoctorDashboard = () => {
         if (response.ok) {
           fetchPatients(); 
         }
-
       } else {
-        console.log("Route 3 is it")
+        // Use POST for adding a new patient
         const response = await fetch('/api/patients', {
-          
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -75,14 +77,15 @@ const DoctorDashboard = () => {
     } catch (error) {
       console.error('Error saving patient:', error);
     }
-
+  
     setIsModalOpen(false);
     setNewPatient({
       firstName: '',
       lastName: '',
       email: '',
-      food_restrictions: ''
     });
+
+    
     setCurrentPatientId(null);
     setIsEditing(false);
   };
@@ -91,15 +94,21 @@ const DoctorDashboard = () => {
   const handleEditPatient = (patient) => {
     setIsEditing(true);
     setCurrentPatientId(patient.id);
-    setNewPatient(patient);
+    setNewPatient((patient));
     setIsModalOpen(true);
   };
 
  
   const handleDeletePatient = async (patientId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/patients/${patientId}`, {
+      const response = await fetch(`api/patients/${patientId}`, {
         method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+        
+
       });
       if (response.ok) {
         fetchPatients(); 
@@ -133,7 +142,7 @@ const DoctorDashboard = () => {
               <tr>
                 <th className="py-2 px-4 border-b text-left">No</th>
                 <th className="py-2 px-4 border-b text-left">Patient Name</th>
-                <th className="py-2 px-4 border-b text-left">food Restrictions</th>
+                <th className="py-2 px-4 border-b text-left">Patient Email</th>
                 <th className="py-2 px-4 border-b text-left">Actions</th>
               </tr>
             </thead>
@@ -141,8 +150,8 @@ const DoctorDashboard = () => {
               {patients.map((patient, index) => (
                 <tr key={patient.id}>
                   <td className="py-2 px-4 border-b">{index + 1}</td>
-                  <td className="py-2 px-4 border-b">{`${patient.firstName} ${patient.lastName}`}</td>
-                  <td className="py-2 px-4 border-b">{patient.food_restrictions}</td>
+                  <td className="py-2 px-4 border-b">{`${patient.first_name} ${patient.last_name}`}</td>
+                  <td className="py-2 px-4 border-b">{patient.email}</td>
                   <td className="py-2 px-4 border-b space-x-2">
                     {/* Edit Button */}
                     <button
@@ -179,7 +188,7 @@ const DoctorDashboard = () => {
                 <input
                   type="text"
                   name="firstName"
-                  value={newPatient.firstName}
+                  value={newPatient.first_name}
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border rounded-md"
@@ -190,7 +199,7 @@ const DoctorDashboard = () => {
                 <input
                   type="text"
                   name="lastName"
-                  value={newPatient.lastName}
+                  value={newPatient.last_name}
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border rounded-md"

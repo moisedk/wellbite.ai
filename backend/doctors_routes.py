@@ -15,23 +15,51 @@ doctors_collection = database['doctors']
 
 
 @doctor_bp.route('/patients', methods=['GET'])
-
+@jwt_required()
 def get_patients():
     
     # doctor = doctors_collection.find_one({"_id": ObjectId(doctor_id)})
     # if doctor:
     #     return jsonify(doctor.get('patients', [])), 200
-    user_email = request.headers
-    print("THe doctooooo email is", user_email)
-    return jsonify({"message": "Doctor not found"}), 404
-
-# Route to add a new patient to a doctor's patients list
+    current_user = get_jwt_identity()
+    user_data = database['Users'].find_one({'email': current_user})
+    if user_data:
+        print("User found:", user_data)
+        
+        # Retrieve the 'patients' field from user_data, if it exists
+        patients = user_data.get('patients', [])  # Default to an empty list if no patients
+        patients = {"first_name" : "Moise",
+                    "last_name" : "Dete",
+                    "id": "gudgdugd281ubdb",
+                    "email" : "michels@berea.edu",
+                    "password" : "$2b$12$wpMntN40ASGFqUYO5mUbv.bVcQ5hjs0yQirHKfx5pDzVivDHTpQQu",
+                    "restrictions" : ""}, {"first_name" : "Amirlo",
+                    "last_name" : "Job",
+                    "id": "gudgdugisb",
+                    "email" : "mils@berea.edu",
+                    "password" : "$2b$12$wpMntN40ASGFqUYO5mUbv.bVcQ5hjs0yQirHKfx5pDzVivDHTpQQu",
+                    "restrictions" : ""}
+        
+        print("My patients are", patients)
+        return jsonify({"patients": patients}), 200  # Return patients in a JSON response
+    else:
+        # If the user is not found, return a 404 error
+        return jsonify({"message": "Doctor not found"}), 404
+    
+    
+    
 
 @doctor_bp.route('/patients', methods=['POST'])
+@jwt_required()
 def add_patient():
     print(100*"&")
     data = request.json
-    print("The dad is", data)
+    current_doctor = get_jwt_identity()
+    
+    print("dhidhidhdddddddddddddddd", current_doctor)
+    doctor = database['Users'].find_one({'email': current_doctor})
+    
+    
     first_name = data.get("firstName")
     last_name = data.get("lastName")
     email = data.get("email")
@@ -41,15 +69,8 @@ def add_patient():
     print("The patient is", patient)
     
     
-    if patient:
-        return jsonify({"message": "Patient is found", "patient": patient}), 200
-    
-    
 
-    patient_id = patient.get('_id')
-
-    doctor_email = data.get("doctor_email")  
-    doctor = database["Users"].find_one({"email": doctor_email, "is_doctor": True})
+    patient_id = patient.get('_id')  
 
     if not doctor:
         return jsonify({"error": "Doctor not found"}), 404
@@ -84,20 +105,24 @@ def add_patient():
     # return jsonify({"message": "Doctor not found", }), 404
 
 # Route to update a patient's information
-@doctor_bp.route('/patients/<patient_id>', methods=['PUT'])
-def update_patient(doctor_id, patient_id):
+@doctor_bp.route('/patients/<patient_Id>', methods=['PUT'])
+@jwt_required()
+def update_patient(patient_Id):
+    print("the patient id to modify is", patient_Id)
+    current_doctor = get_jwt_identity()
+    
+    print("dhidhidhdddddddddddddddd", current_doctor)
+    doctor = database['Users'].find_one({'email': current_doctor})
+    
     data = request.get_json()
     
     # Update the patient information in the doctor's patients array
     result = doctors_collection.update_one(
-        {"_id": ObjectId(doctor_id), "patients.id": ObjectId(patient_id)},
+        {"_id": ObjectId(doctor["_id"]), "patients.id": ObjectId(patient_Id)},
         {"$set": {
             "patients.$.firstName": data.get("firstName"),
             "patients.$.lastName": data.get("lastName"),
             "patients.$.email": data.get("email"),
-            "patients.$.age": data.get("age"),
-            "patients.$.diagnosis": data.get("diagnosis"),
-            "patients.$.restrictions": data.get("restrictions")
         }}
     )
     
@@ -106,11 +131,18 @@ def update_patient(doctor_id, patient_id):
     return jsonify({"message": "Patient or doctor not found"}), 404
 
 # Route to delete a patient from a doctor's patients list
-@doctor_bp.route('/patients/<patient_id>', methods=['DELETE'])
-def delete_patient(doctor_id, patient_id):
+@doctor_bp.route('/patients/<patient_Id>', methods=['DELETE'])
+@jwt_required()
+def delete_patient(patient_Id):
+    print("the patient id to delete is", patient_Id)
+    current_doctor = get_jwt_identity()
+    
+    print("dhidhidhdddddddddddddddd", current_doctor)
+    doctor = database['Users'].find_one({'email': current_doctor})
+    
     result = doctors_collection.update_one(
-        {"_id": ObjectId(doctor_id)},
-        {"$pull": {"patients": {"id": ObjectId(patient_id)}}}
+        {"_id": ObjectId(doctor['_id'])},
+        {"$pull": {"patients": {"id": ObjectId(patient_Id)}}}
     )
     
     if result.modified_count > 0:
