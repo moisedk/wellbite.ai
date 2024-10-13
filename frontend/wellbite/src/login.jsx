@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  let navigate = useNavigate()
   // State to manage form data
   const [formData, setFormData] = useState({
     email: '',
@@ -33,7 +35,7 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert('Login successful!');
+        navigate('/doctor/dashboard');
         // Redirect to the dashboard or another page upon successful login
       } else {
         alert(data.message || 'Login failed');
