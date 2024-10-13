@@ -7,7 +7,7 @@ const DoctorSignup = () => {
     last_name: '',
     email: '',
     password: '',
-    specialization: '',
+    is_doctor: true,
   });
 
   // Handle input changes for all form fields
@@ -26,8 +26,9 @@ const DoctorSignup = () => {
 
     // Here, you can send the data to your backend API
     try {
-      const response = await fetch('http://localhost:5000/api/signup', {
+      const response = await fetch('/user/register', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -109,22 +110,6 @@ const DoctorSignup = () => {
               name="password"
               id="password"
               value={formData.password}
-              onChange={handleChange}
-              required
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          {/* Specialization Field */}
-          <div className="mb-4">
-            <label htmlFor="specialization" className="block text-sm font-medium text-gray-700">
-              Specialization
-            </label>
-            <input
-              type="text"
-              name="specialization"
-              id="specialization"
-              value={formData.specialization}
               onChange={handleChange}
               required
               className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
