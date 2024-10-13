@@ -36,8 +36,13 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert('Login successful!');
-        navigate('/patients')
+        if (data['is_doctor']){
+          navigate('/doctor/dashboard');
+        }
+        else{
+          navigate('/dashboard');
+        }
+        
         // Redirect to the dashboard or another page upon successful login
       } else {
         alert(data.message || 'Login failed');
@@ -50,7 +55,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mx-4">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
         <form onSubmit={handleSubmit}>
           {/* Username Field */}
