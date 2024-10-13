@@ -52,7 +52,7 @@ def signup():
     # Insert the new doctor into MongoDB
     # result = db.doctors.insert_one(doctor)
 
-    return jsonify({"message": f"Welcome, Dr. {doctor["last_name"]}!"}), 200
+    return jsonify({"message": "Welcome, Dr."}), 200
 
 
 
