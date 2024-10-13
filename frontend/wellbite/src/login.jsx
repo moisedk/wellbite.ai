@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Login = () => {
   // State to manage form data
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -23,7 +23,7 @@ const Login = () => {
 
     // Example: Make a request to your backend to authenticate the user
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,12 +52,12 @@ const Login = () => {
           {/* Username Field */}
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
+              Email address
             </label>
             <input
-              type="text"
-              name="username"
-              id="username"
+              type="email"
+              name="email"
+              id="email"
               value={formData.username}
               onChange={handleChange}
               required
