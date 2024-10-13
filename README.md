@@ -33,8 +33,8 @@
 
 | Component             | Technology                      | Responsible Person             |
 |-----------------------|----------------------------------|--------------------------------|
-| **Frontend**           | React.js                        | Tojo Tsimalay                 |
-| **Backend**            | Python, Flask                   | Stevenson Michel              |
+| **Frontend**           | React.js                        | Tojo Tsimalay, Stevenson M.   |
+| **Backend**            | Python, Flask                   | Stevenson Michel, Amir Aref   |
 | **Database**           | MongoDB                         | Amir Aref                     |
 | **AI Model**           | Custom model using Llama        | Tojo Tsimalay                 |
 | **Hosting Platform**   | Cloudflare                      | Moise Dete-Kpinssounon        |
