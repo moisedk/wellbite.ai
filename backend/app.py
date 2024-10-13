@@ -8,6 +8,7 @@ import certifi
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import JWTManager
 from database import db_init
+from doctors_routes import doctor_bp
 from authenticate import user
 from userDetails import profile
 
@@ -23,6 +24,8 @@ uploads = './static'
 
 app.register_blueprint(user, url_prefix='/user')
 app.register_blueprint(profile, url_prefix='/profile')
+
+app.register_blueprint(doctor_bp, url_prefix='/api')
 
 
 app.config['SECRET_KEY'] = 'secret-key'

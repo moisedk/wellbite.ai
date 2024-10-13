@@ -8,21 +8,29 @@ const DoctorDashboard = () => {
     firstName: '',
     lastName: '',
     email: '',
-    age: '',
-    diagnosis: '',
-    restrictions: '',
+    food_restrictions: '',
   });
   const [currentPatientId, setCurrentPatientId] = useState(null);
+  const userEmail = localStorage.getItem('userEmail')
 
   useEffect(() => {
     fetchPatients();
   }, []);
 
   const fetchPatients = async () => {
+    const userEmail = localStorage.getItem('userEmail'); // Retrieve the user email from localStorage
+    
     try {
-      const response = await fetch('http://localhost:5000/api/patients');
+      const response = await fetch('/api/patients', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Email': userEmail  // Send the user email in the request headers
+        },
+      });
+  
       const data = await response.json();
-      setPatients(data);
+      setPatients(data);  // Assuming setPatients updates the patient state
     } catch (error) {
       console.error('Error fetching patients:', error);
     }
@@ -38,8 +46,9 @@ const DoctorDashboard = () => {
 
     try {
       if (isEditing) {
-        const response = await fetch(`http://localhost:5000/api/patients/${currentPatientId}`, {
-          method: 'PUT',
+        console.log("Route 2 is hit")
+        const response = await fetch(`/api/patients`, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -48,8 +57,11 @@ const DoctorDashboard = () => {
         if (response.ok) {
           fetchPatients(); 
         }
+
       } else {
-        const response = await fetch('http://localhost:5000/api/patients', {
+        console.log("Route 3 is it")
+        const response = await fetch('/api/patients', {
+          
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -69,9 +81,7 @@ const DoctorDashboard = () => {
       firstName: '',
       lastName: '',
       email: '',
-      age: '',
-      diagnosis: '',
-      restrictions: '',
+      food_restrictions: ''
     });
     setCurrentPatientId(null);
     setIsEditing(false);
@@ -123,9 +133,7 @@ const DoctorDashboard = () => {
               <tr>
                 <th className="py-2 px-4 border-b text-left">No</th>
                 <th className="py-2 px-4 border-b text-left">Patient Name</th>
-                <th className="py-2 px-4 border-b text-left">Age</th>
-                <th className="py-2 px-4 border-b text-left">Diagnosis</th>
-                <th className="py-2 px-4 border-b text-left">Restrictions</th>
+                <th className="py-2 px-4 border-b text-left">food Restrictions</th>
                 <th className="py-2 px-4 border-b text-left">Actions</th>
               </tr>
             </thead>
@@ -134,9 +142,7 @@ const DoctorDashboard = () => {
                 <tr key={patient.id}>
                   <td className="py-2 px-4 border-b">{index + 1}</td>
                   <td className="py-2 px-4 border-b">{`${patient.firstName} ${patient.lastName}`}</td>
-                  <td className="py-2 px-4 border-b">{patient.age}</td>
-                  <td className="py-2 px-4 border-b">{patient.diagnosis}</td>
-                  <td className="py-2 px-4 border-b">{patient.restrictions}</td>
+                  <td className="py-2 px-4 border-b">{patient.food_restrictions}</td>
                   <td className="py-2 px-4 border-b space-x-2">
                     {/* Edit Button */}
                     <button
@@ -196,39 +202,6 @@ const DoctorDashboard = () => {
                   type="email"
                   name="email"
                   value={newPatient.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Age</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={newPatient.age}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Diagnosis</label>
-                <input
-                  type="text"
-                  name="diagnosis"
-                  value={newPatient.diagnosis}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border rounded-md"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Restrictions</label>
-                <input
-                  type="text"
-                  name="restrictions"
-                  value={newPatient.restrictions}
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border rounded-md"

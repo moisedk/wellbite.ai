@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  let navigate = useNavigate()
   // State to manage form data
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
+  const navigate = useNavigate();
   // Handle input changes for both fields
   const handleChange = (e) => {
     setFormData({
@@ -16,12 +16,13 @@ const Login = () => {
       [e.target.name]: e.target.value, // Dynamically update form data based on input name
     });
   };
-
+  localStorage.setItem("UserEmail", formData.email)
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
     console.log(formData); // Log the form data (for now)
+
 
     // Example: Make a request to your backend to authenticate the user
     try {
