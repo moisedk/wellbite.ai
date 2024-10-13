@@ -9,7 +9,7 @@ import PrivateRoute from "./privateRoute";
 import PrivateRouteDoctor from "./privateRouteDoctor";
 import PrivateRoutePatient from "./privateRoutePatient";
 import DoctorDashboard from "./DoctorDashboard";
-
+import PatientSignup from "./patientSignUp";
 
 function App() {
   return (
@@ -22,7 +22,9 @@ function App() {
     <Route path="/login" element={<Login/>}/>
     <Route path="/doctor/dashboard" element={<PrivateRoute><PrivateRouteDoctor><DoctorDashboard/></PrivateRouteDoctor></PrivateRoute>}/>
     <Route path="/profile" element={<PrivateRoute><PrivateRoutePatient><PatientProfile/></PrivateRoutePatient></PrivateRoute>}/>
+    <Route path="/patient-signup" element={<PatientSignup/>}/>
    </Routes>
+
    </BrowserRouter>
   );
 }

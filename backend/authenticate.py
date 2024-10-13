@@ -64,22 +64,17 @@ def login():
     print(email, password)
     if not registered or not bcrypt.check_password_hash(registered['password'], password):
         return jsonify({'response': 'wrong email address or password'}), 401
+
+    is_doctor = registered['is_doctor']
+    print(is_doctor)
     access_token = create_access_token(identity=email)
     # refresh token is no longer being used
     refresh_token = create_refresh_token(identity=email)
-    if registered['is_doctor']:
-        patients = database['Users'].find_one({'email': email})['patients']
-        resp = jsonify(
-            {'msg': 'logged in', 'patients': patients})
-        resp.headers.add('Access-Control-Allow-rigin',
-                         'https://localhost:3000/')
-    else:
-        food_restrictions = database['Users'].find_one({'email': email})[
-            'food_restrictions']
-        resp = jsonify(
-            {'msg': 'logged in', 'food_restrictions': food_restrictions})
-        resp.headers.add('Access-Control-Allow-rigin',
-                         'https://localhost:3000/')
+
+    resp = jsonify(
+        {'msg': 'logged in', 'is_doctor': is_doctor})
+    resp.headers.add('Access-Control-Allow-rigin',
+                     'https://localhost:3000/')
 
     # adds the token to response header (the token will be set as cookie in the browser)
     set_access_cookies(resp, access_token, max_age=7776000)
