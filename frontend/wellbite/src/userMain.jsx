@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { storage } from './firebaseConfig';
@@ -7,6 +7,24 @@ import DetectBarcode from "./detectBarcode";
 import FoodCollector from "./manualCollectFood";
 const UserMain = () => {
     const [image, setImage] = useState(null);
+    const [restrictions, setRestrictions] = useState();
+    const[imgUrl, setImgUrl] = useState()
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+    useEffect(()=>{
+        fetch('/profile/food-restrictions', {
+            method: 'GET',
+        credentials: 'include',
+        headers: {
+            'X-CSRF-TOKEN': getCookie('csrf_access_token'),
+            'Content-Type': 'application/json'
+        }
+        }).then(response =>  response.json()).then(data=>setRestrictions(data))
+    }, []);
     const handleFileChange = async (event) => {
       const input_image = event.target.files[0];
       if (input_image){
@@ -17,7 +35,6 @@ const UserMain = () => {
         // Get download URL
         const url = await getDownloadURL(storageRef);
         console.log('Image uploaded successfully:', url);
-
         // Send the image URL to Cloudflare Worker for analysis
         const response = await fetch('http://localhost:8787', {
             method: 'POST',
@@ -26,9 +43,8 @@ const UserMain = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                foodSource: 'image', 
-                foodList: foodList,
-                restrictions: 'Mango, Apple, Banana',
+                foodSource: url, 
+                restrictions: 'restrictions',
               }),
         });
         const data = await response.json();
@@ -51,8 +67,11 @@ const UserMain = () => {
                 method: 'POST',
                 body: formData
             };
-            fetch('/checkfood', sendImg).then(response=> response.json()).then(data=>console.log(data)) // Create a local URL for the image
+            fetch('/checkfood', sendImg).then(response=> response.json()).then(data=>console.log(data));// Create a local URL for the image
           }
+        if (imgUrl){
+            
+        }
     }
     return (
         <section className="w-screen h-screen bg-blue-100 place-items-center flex juatify-center">

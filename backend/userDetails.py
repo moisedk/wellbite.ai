@@ -25,3 +25,12 @@ def getUserDetails():
     email = user_data['email']
     restrictions = user_data['food_restrictions']
     return jsonify({'first_name': first_name, 'last_name': last_name, 'email': email, 'restrictions': restrictions}), 200
+
+
+@profile.route('/food-restrictions', methods=['GET'])
+@jwt_required()
+def getFoodRestrictions():
+    current_user = get_jwt_identity()
+    user_data = database['Users'].find_one({'email': current_user})
+    restrictions = user_data['food_restrictions']
+    return jsonify({'restrictions': restrictions}), 200
