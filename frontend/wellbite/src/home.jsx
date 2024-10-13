@@ -7,7 +7,7 @@ const Home =()=>{
     <div className="bg-[#212121] bg-opacity-[60%] h-full w-full">
       <div className="w-full h-[10%] bg-inhet sticky flex justify-between px-12 place-items-center">
         <h1 className="font-futura text-white text-4xl">WellBite</h1>
-      <Link to={'/dashboard'}><button className="hover:-translate-y-1 hover:bg-gray-200 hover:text-black transition border-2 hover:scale-110 bg-transparent rounded-lg px-4 py-2 text-white ease-in-out">Login</button></Link>
+      <Link to={'/login'}><button className="hover:-translate-y-1 hover:bg-gray-200 hover:text-black transition border-2 hover:scale-110 bg-transparent rounded-lg px-4 py-2 text-white ease-in-out">Login</button></Link>
       </div>
 
       <div className="w-full h-[80%] place-items-center justify-center">

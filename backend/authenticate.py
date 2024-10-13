@@ -7,15 +7,16 @@ from flask_jwt_extended import (create_access_token, jwt_required, get_jwt_ident
                                 set_access_cookies, set_refresh_cookies, create_refresh_token, unset_jwt_cookies)
 
 from flask_cors import CORS
-auth = Blueprint('auth', __name__)
+
+user = Blueprint('user', __name__)
 bcrypt = Bcrypt()
 
 database = db_init()
 
-CORS(auth, origins=["https://localhost:3000/"], supports_credentials=True)
+CORS(user, origins=["https://localhost:3000/"], supports_credentials=True)
 
 
-@auth.route('/register', methods=['GET', 'POST'])
+@user.route('/register', methods=['GET', 'POST'])
 def register():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
@@ -55,7 +56,7 @@ def register():
     return jsonify({'msg': 'Action failed'}), 500
 
 
-@auth.route('/login', methods=['POST', 'GET'])
+@user.route('/login', methods=['POST', 'GET'])
 def login():
     email = request.json['email']
     password = request.json['password']
@@ -84,3 +85,38 @@ def login():
     set_access_cookies(resp, access_token, max_age=7776000)
     set_refresh_cookies(resp, refresh_token, max_age=7776000)
     return resp, 200
+
+
+@user.route('/verify', methods=['POST'])
+@jwt_required()
+def verify():
+    current_user = get_jwt_identity()
+    if not current_user:
+        return jsonify({'msg': 'forbiden access'}), 401
+    return jsonify(logged_in_as=current_user), 200
+
+
+@user.route('/verifydoctor', methods=['POST'])
+@jwt_required()
+def verifyDoctor():
+    current_user = get_jwt_identity()
+    if not current_user:
+        return jsonify({'msg': 'forbiden access'}), 401
+    is_doctor = database['Users'].find_one(
+        {'email': current_user})['is_doctor']
+    if not is_doctor:
+        return jsonify({'msg': 'forbiden access'}), 401
+    return jsonify(logged_in_as=current_user), 200
+
+
+@user.route('/verifypatient', methods=['POST'])
+@jwt_required()
+def verifyPatient():
+    current_user = get_jwt_identity()
+    if not current_user:
+        return jsonify({'msg': 'forbiden access'}), 401
+    is_doctor = database['Users'].find_one(
+        {'email': current_user})['is_doctor']
+    if is_doctor:
+        return jsonify({'msg': 'forbiden access'}), 401
+    return jsonify(logged_in_as=current_user), 200

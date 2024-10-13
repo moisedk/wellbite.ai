@@ -1,5 +1,5 @@
 # Import the global `db` object (from app.py)
-from app import db
+
 
 from bson.objectid import ObjectId
 
