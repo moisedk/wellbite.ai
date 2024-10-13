@@ -59,8 +59,8 @@ export interface Env {
 				return new Response(JSON.stringify({ error: 'Image URL not provided' }), { status: 400 });
 			  }
   
-			  prompt = `Inspect this food picture and detect what it contains. If the image is not a food picture, then say it. The image URL: ${body.imageUrl}
-			  Then, using the doctor-provided restriction: ${body.restrictions}, inform the user if the food is safe to eat. Be sure to provide a reason. Be kind, helpful, and professional.
+			  prompt = `Inspect this food picture and detect what it contains. If the image is not a food picture, then say it. If the the food looks safe, identify the type of dish and identify if there is any ingredient not seen on the picture that may endanger the life of the customer. The image URL: ${body.imageUrl}
+			  Then, using the doctor-provided restriction in json file: ${body.restrictions}, inform the user if the food is safe to eat. Be sure to provide a reason. Be kind, helpful, and professional.
 			  `;
   
 			} else if (body.foodSource === 'text') {

@@ -46,7 +46,7 @@ def register():
                 'last_name': last_name,
                 'email': email,
                 'password': hashed_password,
-                'food_restrictions': [],
+                'food_restrictions': {},
                 'is_doctor': is_doctor,
             }
 
