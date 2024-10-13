@@ -34,17 +34,18 @@
 | Component             | Technology                      | Responsible Person             |
 |-----------------------|----------------------------------|--------------------------------|
 | **Frontend**           | React.js                        | Tojo Tsimalay                 |
-| **Backend**            | Python, Flask                   | Stevenson Michel, Moise Dete-Kpinssounon |
+| **Backend**            | Python, Flask                   | Stevenson Michel              |
 | **Database**           | MongoDB                         | Amir Aref                     |
-| **AI Model**           | Custom model using TensorFlow   | Tojo Tsimalay                 |
-| **Hosting Platform**   | Cloudflare                      | Defang                        |
+| **AI Model**           | Custom model using Llama        | Tojo Tsimalay                 |
+| **Hosting Platform**   | Cloudflare                      | Moise Dete-Kpinssounon        |
+| **QR Scan**            | QuaggaJS                        | Moise Dete-Kpinssounon        |
 
 ### Why We Chose This Stack:
 - **React.js**: Provides a responsive and dynamic front-end, allowing users to easily upload photos and interact with the app.
 - **Flask**: Lightweight and powerful, Flask seamlessly integrates with the AI model and handles requests efficiently.
 - **MongoDB**: NoSQL database ideal for storing flexible, unstructured data such as food images, dietary information, and user records.
 - **Cloudflare**: Ensures top-notch security and fast content delivery, making the app scalable and secure.
-- **TensorFlow AI Model**: Accurately analyzes food content from images and cross-references it with dietary restrictions for personalized recommendations.
+- **Llama AI Model**: Accurately analyzes food content from images and cross-references it with dietary restrictions for personalized recommendations.
 
 ## Installation
 
@@ -103,13 +104,12 @@ cd wellbite-ai
 ### For Patients:
 1. **Sign up** for an account and log in.
 2. **Upload a photo** of your meal using the intuitive image upload interface.
-3. The AI model will analyze the meal and provide **dietary advice** based on your doctor's recommendations.
-4. View your **dietary history** and compliance on your personal dashboard.
+3. The AI model will analyze the meal and provide **dietary advice** based on your doctor's restrictions.
 
 ### For Doctors:
 1. **Log in** to your doctor account.
 2. Access your patient list and set **dietary restrictions** based on their medical needs.
-3. Monitor patient compliance and make adjustments to their dietary plan when necessary.
+3. Make adjustments to their dietary plan when necessary.
 
 ## Contributing
 
