@@ -5,6 +5,10 @@ from flask_bcrypt import bcrypt
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import certifi
+from datetime import datetime, timedelta, timezone
+from flask_jwt_extended import JWTManager
+from database import db_init
+from authenticate import auth
 
 app = Flask(__name__, static_url_path='/static')
 # Enable CORS for cross-origin requests
@@ -16,45 +20,26 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 uploads = './static'
 
 
-client = MongoClient('mongodb+srv://iamirrf:FQo5SKNumEm29QSQ@wellbite.upb7t.mongodb.net/?retryWrites=true&w=majority',
-                                  tlsCAFile=certifi.where())
-db = client['wellbite_ai']  # database name
+app.register_blueprint(auth, url_prefix='/user')
 
 
-@app.route('/api/signup', methods=['POST'])
-def signup():
-    data = request.get_json()
-    print(100*"#")
-    print(data)
+app.config['SECRET_KEY'] = 'secret-key'
 
-    # Check if all required fields are provided
-    if not all([data.get('first_name'), data.get('last_name'), data.get('username'), data.get('email'), data.get('password'), data.get('specialization')]):
-        return jsonify({"message": "Missing fields"}), 400
+# setting up flask-jwt for authentification
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
+app.config['JWT_COOKIE_SECURE'] = True
+app.config['JWT_COOKIE_SAMESITE'] = 'None'
+app.config['JWT_SECRET_KEY'] = os.environ.get(
+    'JWT_SECRET_KEY')  # to be changed
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+app.config['JWT_TOKEN_EXPIRES'] = timedelta(minutes=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=90)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=90)
 
-    # Check if email already exists
-    # if db.doctors.find_one({"email": data['email']}):
-    #     return jsonify({"message": "Email already in use"}), 400
+jwt = JWTManager(app)
 
-    # Hash the password
-    # hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    # print("hashhhhh is", hashed_password)
-    # Create a new doctor document
-    doctor = {
-        "first_name": data['first_name'],
-        "last_name": data['last_name'],
-        "username": data['username'],
-        "email": data['email'],
-        "password": data['password'],
-        "specialization": data['specialization']
-    }
-    
-    print("I see you")
-    # Insert the new doctor into MongoDB
-    # result = db.doctors.insert_one(doctor)
-
-    return jsonify({"message": "Welcome, Dr."}), 200
-
-
+db_init()
 
 
 @app.route('/checkfood', methods=['GET', 'POST'])
