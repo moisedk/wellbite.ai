@@ -10,6 +10,8 @@ from flask_jwt_extended import JWTManager
 from database import db_init
 from authenticate import auth
 from doctors_routes import doctor_bp
+from authenticate import user
+from userDetails import profile
 
 app = Flask(__name__, static_url_path='/static')
 # Enable CORS for cross-origin requests
@@ -21,7 +23,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 uploads = './static'
 
 
-app.register_blueprint(auth, url_prefix='/user')
+app.register_blueprint(user, url_prefix='/user')
+app.register_blueprint(profile, url_prefix='/profile')
 
 app.register_blueprint(doctor_bp, url_prefix='/api')
 

@@ -15,6 +15,7 @@ doctors_collection = database['doctors']
 
 
 @doctor_bp.route('/patients', methods=['GET'])
+
 def get_patients():
     
     # doctor = doctors_collection.find_one({"_id": ObjectId(doctor_id)})
