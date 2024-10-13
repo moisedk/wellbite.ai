@@ -8,7 +8,6 @@ import certifi
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import JWTManager
 from database import db_init
-from authenticate import auth
 from doctors_routes import doctor_bp
 from authenticate import user
 from userDetails import profile
