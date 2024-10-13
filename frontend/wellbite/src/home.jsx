@@ -17,7 +17,7 @@ const Home =()=>{
         <div className="w-full h-[30%] justify-center flex flex-col place-items-center">
           <h1 className="text-gray-200 text-2xl underline">Get Started</h1>
           <div className="w-[26%] h-full flex justify-between place-items-center">
-            <button className="bg-[#4F5DF9] transition ease-in-out bg-opacity-[40%] hover:scale-110 border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4 hover:-translate-y-1 hover:bg-opacity-100 hover:text-white">I am a Doctor</button>
+            <Link to={'/docsignup'} className="bg-[#4F5DF9] transition ease-in-out bg-opacity-[40%] hover:scale-110 border-[#4F5DF9] rounded-xl border-2 text-white text-xl px-6 py-4 hover:-translate-y-1 hover:bg-opacity-100 hover:text-white">I am a Doctor</Link>
             <button className="bg-[#69e371] transition ease-in-out hover:-translate-y hover:bg-opacity-100 hover:text-white bg-opacity-[40%] border-[#4FF95A] rounded-xl hover:scale-110 border-2 text-white text-xl px-6 py-4">I am a Patient</button>
           </div>
         </div>

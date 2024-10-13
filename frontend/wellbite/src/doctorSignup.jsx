@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorSignup = () => {
   // State to manage form data
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
+    username: '',
     email: '',
     password: '',
     specialization: '',
   });
+
+  const [successMessage, setSuccessMessage] = useState(''); // For success messages
+  const [errorMessage, setErrorMessage] = useState('');     // For error messages
+  const navigate = useNavigate();
 
   // Handle input changes for all form fields
   const handleChange = (e) => {
@@ -36,13 +42,21 @@ const DoctorSignup = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert('Doctor registered successfully!');
+        setSuccessMessage(`Welcome, Dr. ${formData.username}! You have successfully logged in.`);
+        setErrorMessage(''); // Clear any previous error message
+
+        // Optionally, redirect to the dashboard after showing the message
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000); 
       } else {
-        alert(data.message || 'Signup failed');
+        setErrorMessage(data.message || 'Signup failed. Please try again.');
+        setSuccessMessage('');
       }
     } catch (error) {
       console.error('Error during signup:', error);
-      alert('Error during signup');
+      setErrorMessage('An error occurred. Please try again.');
+      setSuccessMessage('');
     }
   };
 
@@ -77,6 +91,22 @@ const DoctorSignup = () => {
               name="last_name"
               id="last_name"
               value={formData.last_name}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Username Field */}
+          <div className="mb-4">
+            <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              value={formData.username}
               onChange={handleChange}
               required
               className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
