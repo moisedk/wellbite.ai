@@ -1,51 +1,86 @@
 from flask import Blueprint, request, jsonify
-from models import User
 from bson import ObjectId
-from db_init import db_init
+from database import db_init
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 import datetime
-
+from flask_cors import CORS
 # Initialize the Blueprint
 doctor_bp = Blueprint('doctor_bp', __name__)
 
+CORS(doctor_bp, origins=["https://localhost:3000/"], supports_credentials=True)
 
-db = db_init()
-doctors_collection = db['doctors']
+database = db_init()
+doctors_collection = database['doctors']
 
-@jwt_required()
+
+
 @doctor_bp.route('/patients', methods=['GET'])
 def get_patients():
-    doctor_id = get_jwt_identity()
     
-    doctor = doctors_collection.find_one({"_id": ObjectId(doctor_id)})
-    if doctor:
-        return jsonify(doctor.get('patients', [])), 200
+    # doctor = doctors_collection.find_one({"_id": ObjectId(doctor_id)})
+    # if doctor:
+    #     return jsonify(doctor.get('patients', [])), 200
+    user_email = request.headers
+    print("THe doctooooo email is", user_email)
     return jsonify({"message": "Doctor not found"}), 404
 
 # Route to add a new patient to a doctor's patients list
-@doctor_bp.route('/patients/add_patient', methods=['POST'])
+
+@doctor_bp.route('/patients', methods=['POST'])
 def add_patient():
-    doctor_id = get_jwt_identity()
-    data = request.get_json()
-    new_patient = {
-        "id": ObjectId(),  # Generate unique ID for the patient
-        "firstName": data.get("firstName"),
-        "lastName": data.get("lastName"),
-        "email": data.get("email"),
-        "age": data.get("age"),
-        "diagnosis": data.get("diagnosis"),
-        "restrictions": data.get("restrictions")
-    }
+    print(100*"&")
+    data = request.json
+    print("The dad is", data)
+    first_name = data.get("firstName")
+    last_name = data.get("lastName")
+    email = data.get("email")
     
-    # Add the new patient to the doctor's patients list
-    result = doctors_collection.update_one(
-        {"_id": ObjectId(doctor_id)},
-        {"$push": {"patients": new_patient}}
+    patient = database["Users"].find_one({"email": email, "firstName": first_name, "lastName": last_name}) 
+    
+    print("The patient is", patient)
+    
+    
+    if patient:
+        return jsonify({"message": "Patient is found", "patient": patient}), 200
+    
+    
+
+    patient_id = patient.get('_id')
+
+    doctor_email = data.get("doctor_email")  
+    doctor = database["Users"].find_one({"email": doctor_email, "is_doctor": True})
+
+    if not doctor:
+        return jsonify({"error": "Doctor not found"}), 404
+
+    result = database["Users"].update_one(
+        {"_id": doctor['_id']}, 
+        {"$addToSet": {"patients": patient_id}}  
     )
+        
     
-    if result.modified_count > 0:
-        return jsonify({"message": "Patient added successfully"}), 201
-    return jsonify({"message": "Doctor not found"}), 404
+    return jsonify({"message": "Patient not found", }), 404
+    
+    # data = request.get_json()
+    # new_patient = {
+    #     "id": ObjectId(),  # Generate unique ID for the patient
+    #     "firstName": data.get("firstName"),
+    #     "lastName": data.get("lastName"),
+    #     "email": data.get("email"),
+    #     "is_doctor": False,
+    #     "food_restrictions": []
+    # }
+    
+    # doctor = doctors_collection.find_one({"email": email})
+    # Add the new patient to the doctor's patients list
+    # result = doctors_collection.update_one(
+    #     {"_id": ObjectId(doctor_id)},
+    #     {"$push": {"patients": new_patient}}
+    # )
+    
+    # if result.modified_count > 0:
+    #     return jsonify({"message": "Patient added successfully"}), 201
+    # return jsonify({"message": "Doctor not found", }), 404
 
 # Route to update a patient's information
 @doctor_bp.route('/patients/<patient_id>', methods=['PUT'])

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   // State to manage form data
@@ -7,6 +8,7 @@ const Login = () => {
     password: '',
   });
 
+  const navigate = useNavigate();
   // Handle input changes for both fields
   const handleChange = (e) => {
     setFormData({
@@ -14,12 +16,13 @@ const Login = () => {
       [e.target.name]: e.target.value, // Dynamically update form data based on input name
     });
   };
-
+  localStorage.setItem("UserEmail", formData.email)
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
     console.log(formData); // Log the form data (for now)
+
 
     // Example: Make a request to your backend to authenticate the user
     try {
@@ -34,6 +37,7 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         alert('Login successful!');
+        navigate('/patients')
         // Redirect to the dashboard or another page upon successful login
       } else {
         alert(data.message || 'Login failed');
