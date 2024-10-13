@@ -4,11 +4,11 @@ import Home from "./home";
 import UserMain from "./userMain";
 import DoctorSignup from "./DoctorSignup";
 import Login from "./login";
-import DoctorDashboard from "./DoctorDashboard";
 import PatientProfile from "./patientProfile";
 import PrivateRoute from "./privateRoute";
 import PrivateRouteDoctor from "./privateRouteDoctor";
 import PrivateRoutePatient from "./privateRoutePatient";
+import DoctorDashboard from "./DoctorDashboard";
 
 
 function App() {
